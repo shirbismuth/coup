@@ -1,5 +1,6 @@
 // GUI.cpp - כולל הצגת תור שחקן ופעולה לפי תור בלבד
 #include <SFML/Graphics.hpp>
+#include "Gui.hpp"
 #include "Game.hpp"
 #include <vector>
 #include <string>
@@ -8,7 +9,15 @@
 
 using namespace coup;
 
-void drawSidebar(Game *game, sf::RenderWindow &window, sf::Font &font, const std::vector<Player *> &players, Player *current, int &selectedPlayerIndex, int &hoveredPlayerIndex)
+namespace coup {
+Gui::Gui() : window(sf::VideoMode(1000, 600), "Coup - GUI Gameboard") {
+    if(!font.loadFromFile("ARIAL.TTF")) {
+        std::cerr << "Error loading font" << std::endl;
+    }
+}
+
+
+void Gui::drawSidebar(Game *game, const std::vector<Player*> &players, Player *current, int &selectedPlayerIndex, int &hoveredPlayerIndex)
 {
     sf::RectangleShape sidebar(sf::Vector2f(250, 600));
     sidebar.setFillColor(sf::Color(30, 30, 30));
@@ -93,15 +102,8 @@ void drawSidebar(Game *game, sf::RenderWindow &window, sf::Font &font, const std
     }
 }
 
-int main()
+int Gui::run()
 {
-    sf::RenderWindow window(sf::VideoMode(1000, 600), "Coup - GUI Gameboard");
-    sf::Font font;
-    if (!font.loadFromFile("ARIAL.TTF"))
-    {
-        std::cerr << "Error loading font" << std::endl;
-        return -1;
-    }
 
     enum State
     {
@@ -471,7 +473,7 @@ int main()
         else if (state == SHOW_ROLES && game)
         {
             Player *current = game->getCurrentPlayer();
-            drawSidebar(game, window, font, game->getPlayers(), current, selectedPlayerIndex, hoveredPlayerIndex);
+            drawSidebar(game, game->getPlayers(), current, selectedPlayerIndex, hoveredPlayerIndex);
 
             for (size_t i = 0; i < actionButtons.size(); ++i)
             {
@@ -583,4 +585,6 @@ int main()
 
     delete game;
     return 0;
+}
+
 }

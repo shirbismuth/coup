@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++17 -Wall
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC = \
-    GUI.cpp \
+    Gui.cpp \
     Game.cpp \
     Player.cpp \
     Merchant.cpp \
@@ -11,7 +11,8 @@ SRC = \
     General.cpp \
     Judge.cpp \
     Baron.cpp \
-    Governor.cpp
+    Governor.cpp \
+    main.cpp
 
 OBJ = $(SRC:.cpp=.o)
 
