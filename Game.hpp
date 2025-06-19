@@ -21,6 +21,10 @@ private:
     Player* lastcoup = nullptr;
     std::vector<Player *> eliminatedPlayers;
     bool initialized = false;
+    Player* lastArrested = nullptr;
+    Player* winner = nullptr;
+    bool gameOver = false;
+
 
 
 public:
@@ -30,12 +34,22 @@ public:
     void nextTurn(Player& p);
     Player* getCurrentPlayer();
     void eliminatePlayer(Player& p);
+    void removefromeliminatePlayer(Player& p);
     std::string createRandomPlayer();
     void printplayer();
     std::vector<Player*>& getPlayers();
     Player* getNextPlayer();
     bool isEliminated(Player* p) const;
     std::vector<Player*> getEliminatedPlayers() const;
+    Player* getLastArrested();
+    void setLastArrested(Player* p);
+    bool isPlayerInGame(Player* p) const;
+    void checkwinner();
+    bool getgameover();
+    Player* getwinner();
+    Player* getLastCoup() const;
+
+
     
 };
 }

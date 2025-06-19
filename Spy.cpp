@@ -4,11 +4,13 @@ namespace coup{
 
     Spy::Spy(Game& game) : Player(game){}
 
-    int Spy::showcoins(const Player& p){
-        return p.coins();
+    int Spy::showCoins(const Player& p){
+
+        return p.getcoins();
     }
 
-    void Spy::block(Player& p){
+    void Spy::blockArrest(Player& p){
+        std::cout << "Block arrest" << std::endl;
         p.setArrestIsBlock(true);
     }
 

@@ -9,43 +9,48 @@ namespace coup
 
    int Player::nextId = 1;
 
-   Player::Player(Game &game) : game(game), playercoins(0), id(nextId++)
+   Player::Player(Game &game) : game(game), coins(0), id(nextId++)
    {
       game.addPlayer(this);
    }
 
-   Player::~Player() {
-
+   Player::~Player()
+   {
    }
-    const int Player::getId() const{
+   const int Player::getId() const
+   {
       return id;
-    }
+   }
 
    void Player::addcoins(int sum)
    {
-      playercoins += sum;
+      coins += sum;
    }
 
    void Player::subcoins(int sum)
    {
-      playercoins -= sum;
+      coins -= sum;
    }
 
-   void Player::iscorrectTurn() 
+   void Player::iscorrectTurn()
    {
-      if (this != game.getCurrentPlayer()) {
-        throw std::runtime_error("Not your turn");
-    }
-      
+      if (this != game.getCurrentPlayer())
+      {
+         throw std::runtime_error("Not your turn");
+      }
    }
 
    void Player::gather()
    {
+      iscorrectTurn();
+      if (coins >=10)
+      {
+         throw std::runtime_error("You have 10+ coins. You must perform a coup.");
+      }
       if (isSanction)
       {
          throw std::runtime_error("You are under sanction and cannot gather.");
       }
-      iscorrectTurn();
       addcoins(1);
       lastAction = "gather";
       game.nextTurn(*this);
@@ -53,11 +58,15 @@ namespace coup
 
    void Player::tax()
    {
+      iscorrectTurn();
+      if (coins >=10)
+      {
+         throw std::runtime_error("You have 10+ coins. You must perform a coup.");
+      }
       if (isSanction)
       {
          throw std::runtime_error("You are under sanction and cannot collect tax.");
       }
-      iscorrectTurn();
       addcoins(2);
       lastAction = "tax";
       game.nextTurn(*this);
@@ -66,9 +75,13 @@ namespace coup
    void Player::bribe()
    {
       iscorrectTurn();
-      if (playercoins < 4)
+      if (coins >=10)
       {
-         throw std::runtime_error("Not enough coins");
+         throw std::runtime_error("You have 10+ coins. You must perform a coup.");
+      }
+      if (coins < 4)
+      {
+         throw std::runtime_error("Not enough coins to bribe");
       }
       std::cout << "bribe" << std::endl;
       subcoins(4);
@@ -80,19 +93,29 @@ namespace coup
    void Player::arrest(Player &p)
    {
       iscorrectTurn();
-      if (&p == lastArrested) {
-        throw std::runtime_error("Cannot arrest the same player twice in a row");
+      if (coins >=10)
+      {
+         throw std::runtime_error("You have 10+ coins. You must perform a coup.");
       }
-      if (p.playercoins == 0)
+      if (arrestIsBlock == true)
+      {
+         throw std::runtime_error("The arrest action is blocked.");
+      }
+      if (&p == game.getLastArrested())
+      {
+         throw std::runtime_error("Cannot arrest the same player twice in a row");
+      }
+      if (p.coins == 0)
       {
          throw std::runtime_error("The player you selected doesnt have enough coins");
       }
-      if (p.role() == "Merchant"){
+      if (p.role() == "Merchant")
+      {
          p.subcoins(2);
          lastAction = "arrest";
+         game.setLastArrested(&p);
          game.nextTurn(*this);
          return;
-
       }
       p.subcoins(1);
       addcoins(1);
@@ -101,66 +124,66 @@ namespace coup
          p.addcoins(1);
       }
       lastAction = "arrest";
-      lastArrested = &p;
+      game.setLastArrested(&p);
       game.nextTurn(*this);
    }
 
    void Player::sanction(Player &p)
    {
       iscorrectTurn();
-      if (playercoins < 3)
+      if (coins >=10)
+      {
+         throw std::runtime_error("You have 10+ coins. You must perform a coup.");
+      }
+      if (coins < 3)
       {
          throw std::runtime_error("Not enough coins to use sanction.");
       }
       subcoins(3);
       p.isSanction = true;
       lastAction = "sanction";
-      if (p.role() == "Judge"){
+      if (p.role() == "Judge")
+      {
          subcoins(1);
       }
-      if (p.role() == "Baron"){
+      if (p.role() == "Baron")
+      {
          p.addcoins(1);
       }
-      
+
       game.nextTurn(*this);
    }
 
    void Player::coup(Player &p)
    {
       iscorrectTurn();
-      if (playercoins < 7)
+      if ( this == &p){
+          throw std::runtime_error("You cant coup yourself");
+      }
+      if (coins < 7)
       {
          throw std::runtime_error("You need at least 7 coins to perform a coup.");
       }
+      if (!game.isPlayerInGame(&p))
+      {
+         throw std::runtime_error("Cannot perform coup on a player not in the game.");
+      }
+      if (p.eliminated)
+      {
+         throw std::runtime_error("Player already eliminated.");
+      }
+
       subcoins(7);
       game.eliminatePlayer(p);
       lastAction = "coup";
+      p.eliminated = true;
+      game.checkwinner();
       game.nextTurn(*this);
    }
 
-   int Player::coins() const
+   int Player::getcoins() const
    {
-      return playercoins;
-   }
-
-   void Player::block(Player &p)
-   {
-      throw std::runtime_error(role() + " cannot block any action");
-   }
-
-   const std::string &Player::getLastAction() const
-   {
-      return lastAction;
-   }
-
-   const bool Player::getlastActionBlocked() const
-   {
-      return lastActionBlocked;
-   }
-
-   const void Player::setlastActionBlocked(bool b)
-   {
-      lastActionBlocked = b;
+      return coins;
    }
 
    const void Player::setArrestIsBlock(bool b)
@@ -171,9 +194,16 @@ namespace coup
    {
       bribeCount -= 1;
    }
-   std::string Player::getLastAction(){
+   std::string Player::getLastAction()
+   {
       return lastAction;
+   }
+   bool Player::geteliminated(){
 
+      return eliminated;
+   }
+   void Player::seteliminated(bool b){
+      eliminated = b;
    }
 
 }

@@ -10,10 +10,10 @@ namespace coup
 
     void Judge::cancelBribe()
     {
-        std::cout << "try camcel bribe" << std::endl;
+        std::cout << "try cancel bribe" << std::endl;
         if (game.getCurrentPlayer()->getLastAction() == "bribe")
         {
-            std::cout << "camcel bribe" << std::endl;
+            std::cout << "cancel bribe" << std::endl;
             game.getCurrentPlayer()->subBribrCount();
         }
         else

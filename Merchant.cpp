@@ -14,7 +14,7 @@ std::string Merchant::role() const {
 }
 
 void Merchant::applyBonus() {
-    if (coins() >= 3) {
+    if (getcoins() >= 3) {
         addcoins(1);
     }
 }

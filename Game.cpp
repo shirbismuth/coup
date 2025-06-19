@@ -8,48 +8,102 @@ using namespace std;
 namespace coup
 {
 
-    Game::Game() {};
+    Game::Game()
+    {
+        Player::resetIdCounter();
+        players.clear();
+        eliminatedPlayers.clear();
+    };
     Game::~Game()
     {
-        for (Player *p : players)
-        {
-            delete p;
-        }
-        players.clear();
     };
 
     void Game::addPlayer(Player *player)
     {
+        if (players.size() >= 6)
+        {
+            throw std::runtime_error("Cannot add more than 6 players to the game.");
+        }
         players.push_back(player);
     }
+
+    // void Game::nextTurn(Player &p)
+    // {
+    //     p.isSanction = false;
+    //     p.arrestIsBlock = false;
+    //     if (p.bribeCount > 0)
+    //     {
+    //         p.bribeCount--;
+    //         return;
+    //     }
+    //     currentTurn++;
+    // }
 
     void Game::nextTurn(Player &p)
     {
         p.isSanction = false;
+        p.arrestIsBlock = false;
+
         if (p.bribeCount > 0)
         {
             p.bribeCount--;
             return;
         }
-        currentTurn++;
+
+        // מצא את p מחדש ברשימת השחקנים (שמא התעדכנה)
+        auto it = std::find(players.begin(), players.end(), &p);
+        if (it != players.end())
+        {
+            size_t index = std::distance(players.begin(), it);
+            currentTurn = (index + 1) % players.size(); // מעבירים תור לשחקן הבא
+        }
+        else
+        {
+            currentTurn = 0; // fallback
+        }
     }
+
     Player *Game::getCurrentPlayer()
     {
+        if (players.empty())
+        {
+            throw std::runtime_error("No active players in the game.");
+        }
         return players[currentTurn % players.size()];
     }
 
     void Game::eliminatePlayer(Player &p)
     {
+        // שמירה על השחקן שהיה בתור לפני המחיקה
+        Player *current = players[currentTurn];
+
+        // מציאת השחקן שצריך להימחק
         auto it = std::find(players.begin(), players.end(), &p);
         if (it != players.end())
         {
-            eliminatedPlayers.push_back(&p); // Add to eliminated list
+            eliminatedPlayers.push_back(&p);
             lastcoup = &p;
             players.erase(it);
-            if ((it - players.begin()) <= currentTurn && currentTurn > 0)
+
+            // מציאת מיקום חדש של השחקן שבתור
+            auto newIt = std::find(players.begin(), players.end(), current);
+            if (newIt != players.end())
             {
-                currentTurn--;
+                currentTurn = std::distance(players.begin(), newIt);
             }
+            else
+            {
+                currentTurn = 0; // fallback – לא סביר, אבל ליתר ביטחון
+            }
+        }
+    }
+
+    void Game::removefromeliminatePlayer(Player &p)
+    {
+        auto it = std::find(eliminatedPlayers.begin(), eliminatedPlayers.end(), &p);
+        if (it != eliminatedPlayers.end())
+        {
+            eliminatedPlayers.erase(it);
         }
     }
 
@@ -124,5 +178,52 @@ namespace coup
     {
         return eliminatedPlayers;
     }
+    Player *Game::getLastArrested()
+    {
+        return lastArrested;
+    }
+    void Game::setLastArrested(Player *p)
+    {
+        lastArrested = p;
+    }
 
+    bool Game::isPlayerInGame(Player *p) const
+    {
+        for (const auto &player : players)
+        {
+            if (player == p && !player->eliminated)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    void Game::checkwinner()
+    {
+        if (players.size() == 1)
+        {
+            winner = players[0];
+            gameOver = true;
+        }
+    }
+
+    bool Game::getgameover()
+    {
+        return gameOver;
+    }
+
+    Player *Game::getwinner()
+    {
+        return winner;
+    }
+
+    Player *Game::getLastCoup() const
+    {
+
+        if (!eliminatedPlayers.empty())
+        {
+            return eliminatedPlayers.back();
+        }
+        return nullptr;
+    }
 }

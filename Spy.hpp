@@ -1,13 +1,14 @@
 #pragma once
 #include "Player.hpp"
+#include <iostream>
 
 namespace coup {
 
 class Spy : public Player {
 public:
     Spy(Game& game);
-    int showcoins(const Player& p);
-    void block(Player& p) override;
+    int showCoins(const Player& p);
+    void blockArrest(Player& p);
     std::string role() const override;
 };
 

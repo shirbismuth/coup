@@ -7,7 +7,7 @@ namespace coup{
 
     void Baron::invest(){
         iscorrectTurn();
-        if (playercoins<3){
+        if (coins<3){
           throw std::runtime_error("You don't have enough coins.");
       }
       subcoins(3);

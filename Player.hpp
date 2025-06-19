@@ -12,7 +12,7 @@ class Player
     friend class Game;
 protected:
     Game& game;
-    int playercoins;
+    int coins;
     int id;
     static int nextId; 
     std::string lastAction ="";    
@@ -21,6 +21,10 @@ protected:
     bool isSanction = false;
     Player* lastArrested = nullptr;
     int bribeCount =0;
+    bool eliminated = false;
+    bool eliminatedinthisturn = false;
+    
+ 
 
 
 public:
@@ -35,17 +39,17 @@ public:
     void addcoins(int sum);
     void subcoins(int sum);
     const int getId() const;
+    static void resetIdCounter() { nextId = 1; }
     void iscorrectTurn();
-    int coins() const;
-    virtual void block(Player& p);
+    int getcoins() const;
     virtual std::string role() const = 0;
-    bool canact();
-    const std::string& getLastAction() const;
-    const bool getlastActionBlocked() const;
-    const void setlastActionBlocked(bool b);
     const void setArrestIsBlock(bool b);
     void subBribrCount();
     std::string getLastAction();
+    bool geteliminated();
+    void seteliminated(bool b);
+    
+
     
     
 
