@@ -1,102 +1,154 @@
 # 🎮 Coup — C++ GUI Game (SFML)
 
-[![C++](https://img.shields.io/badge/C%2B%2B-17-blue)](#)
-[![Build](https://img.shields.io/badge/build-Makefile-success)](#)
-[![GUI](https://img.shields.io/badge/GUI-SFML-informational)](#)
+[![C++](https://img.shields.io/badge/C%2B%2B-17-blue)](#) [![Build](https://img.shields.io/badge/build-Makefile-success)](#) [![GUI](https://img.shields.io/badge/GUI-SFML-informational)](#)
 
-A graphical implementation of the board game **Coup**, written in **C++17** using **SFML**.  
-Focused on clean **OOP design**, **role-based mechanics**, and an interactive **GUI**.
+A graphical implementation of the board game **Coup**, written in **C++17** using the **SFML** library. Features role-based game logic, strategic bluffing mechanics, and a complete GUI implementation.
 
 ---
 
-## ✨ Features
+## 🎯 Features
 
-- Full **GUI gameplay** (SFML)
-- Clear separation between **game logic** and **UI**
-- Multiple **roles** with unique abilities
-- **Unit tests** using *doctest*
-- Clean project structure: `src/`, `include/`, `assets/`, `tests/`
-
----
-
-## 🧩 Project Overview
-
-**Coup** is a strategic bluffing game where players collect coins, perform actions, block opponents, and eliminate others using coups.  
-The goal is to be the **last remaining player**.
+- **Multiplayer Turn-Based Gameplay** – Support for multiple players with distinct roles
+- **Six Unique Characters** – Governor, Spy, Baron, General, Judge, Merchant with special abilities
+- **Graphical User Interface** – Built with SFML for interactive gameplay
+- **Game Logic** – Coin management, action resolution, blocking mechanics, and win conditions
+- **Automated Tests** – Unit tests using doctest framework
+- **Modular Architecture** – Separation of game logic and GUI layers for extensibility
 
 ---
 
-## 🧑‍🎭 Roles
+## 📖 Project Overview
 
-- **Governor** — gains more from tax and can block taxes  
-- **Spy** — can inspect opponents and block arrest actions  
-- **Baron** — can invest coins and gets compensation when sanctioned  
-- **General** — can block coup attempts  
-- **Judge** — can block bribes and penalize attackers  
-- **Merchant** — passive income & special benefits  
+Coup is a strategic bluffing card game where players compete to be the last one standing. Players take turns performing actions, bluffing about their roles, and eliminating opponents through coups. Each character has unique abilities that affect gameplay strategy.
 
-> Each role is implemented as a separate class.
+This implementation provides:
+- Complete game rules and mechanics
+- Visual representation of game state
+- Turn-based action system
+- Role-specific abilities and blocking mechanisms
 
 ---
 
-## 🗂️ Project Structure
+## 👥 Roles & Characters
 
-```text
-coup/
-├── src/        # C++ source files (.cpp)
-├── include/    # Header files (.hpp)
-├── assets/     # Fonts & images for the GUI
-├── tests/      # Unit tests (doctest)
-├── makefile    # Build configuration
+The game includes six distinct playable characters, each with unique abilities:
+
+- **Governor** – Receives additional coins from tax actions and can block foreign aid
+- **Spy** – Inspects opponent hands and blocks arrest actions
+- **Baron** – Invests coins and receives compensation when challenged
+- **General** – Blocks coup attempts and can challenge opponents
+- **Judge** – Blocks bribes and penalizes attackers with temporary penalties
+- **Merchant** – Gains passive income and has enhanced trading capabilities
+
+Each role is implemented as a separate class inheriting from the `Player` base class.
+
+---
+
+## 📁 Project Structure
+
+```
+coupfix/
+├── src/                  # C++ source implementation files
+├── include/              # Header files
+├── assets/               # Fonts and image resources
+├── tests/                # Unit tests
+├── makefile              # Build configuration
 └── README.md
+```
 
-## 🛠 Technologies
+---
 
-C++17
+## 🛠️ Technologies
 
-SFML (graphics, window, system)
+- **Language:** C++17
+- **GUI Framework:** SFML (Simple and Fast Multimedia Library)
+- **Build System:** GNU Make
+- **Testing Framework:** doctest
 
-GNU Make
+---
 
-doctest (unit testing)
+## 🚀 Build and Run
 
-⚙️ Build and Run
-Prerequisites (Linux / WSL)
+### Prerequisites (Linux / WSL)
+
+Install required build tools and SFML library:
+
+```bash
 sudo apt update
 sudo apt install build-essential libsfml-dev
+```
 
-Build the project
+### Build
+
+Compile all targets:
+
+```bash
 make
+```
 
-Run the game (GUI)
+This builds three executables:
+- `coup_gui` – Main game with GUI
+- `demo` – Demo/example program
+- `test` – Unit test suite
+
+### Run
+
+**Start the game:**
+
+```bash
 ./coup_gui
+```
 
-Run tests
+**Run the demo:**
+
+```bash
+./demo
+```
+
+**Execute tests:**
+
+```bash
 ./test
+```
 
-Clean build files
+### Clean
+
+Remove build artifacts:
+
+```bash
 make clean
+```
 
-🧪 Testing
+---
 
-Unit tests are implemented using doctest and focus on validating:
+## 🧪 Testing
 
-Core game rules
+The project uses **doctest** for unit testing. Tests are located in `tests/tests.cpp` and cover core game mechanics including:
+- Game initialization
+- Player actions
+- Role-specific abilities
+- Blocking mechanisms
+- Win condition logic
 
-Role behaviors
+Run tests with:
 
-Game state transitions
+```bash
+./test
+```
 
-The tests are separated from the GUI layer.
+---
 
-🧠 Design Notes
+## 💡 Design Notes
 
-Clear separation between game logic and GUI
+- **Object-Oriented Design:** Each role is a subclass of `Player` with role-specific behavior
+- **Separation of Concerns:** Game logic is independent from GUI rendering
+- **Extensibility:** New roles can be added by extending the `Player` class
+- **State Management:** Game state is managed centrally in the `Game` class
+- **GUI Integration:** SFML handles rendering and user input
 
-Object-oriented design with inheritance for roles
+---
 
-Project structure allows easy extension and maintenance
-
-👤 Author
+## ✍️ Author
 
 Shir Bismuth
+
