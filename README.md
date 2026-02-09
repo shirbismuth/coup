@@ -49,3 +49,54 @@ coup/
 ├── tests/      # Unit tests (doctest)
 ├── makefile    # Build configuration
 └── README.md
+
+## 🛠 Technologies
+
+C++17
+
+SFML (graphics, window, system)
+
+GNU Make
+
+doctest (unit testing)
+
+⚙️ Build and Run
+Prerequisites (Linux / WSL)
+sudo apt update
+sudo apt install build-essential libsfml-dev
+
+Build the project
+make
+
+Run the game (GUI)
+./coup_gui
+
+Run tests
+./test
+
+Clean build files
+make clean
+
+🧪 Testing
+
+Unit tests are implemented using doctest and focus on validating:
+
+Core game rules
+
+Role behaviors
+
+Game state transitions
+
+The tests are separated from the GUI layer.
+
+🧠 Design Notes
+
+Clear separation between game logic and GUI
+
+Object-oriented design with inheritance for roles
+
+Project structure allows easy extension and maintenance
+
+👤 Author
+
+Shir Bismuth
