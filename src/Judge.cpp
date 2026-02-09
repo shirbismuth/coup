@@ -1,4 +1,4 @@
-#include "Judge.hpp"
+#include "../include/Judge.hpp"
 #include <stdexcept>
 #include <iostream>
 

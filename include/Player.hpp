@@ -48,15 +48,7 @@ public:
     std::string getLastAction();
     bool geteliminated();
     void seteliminated(bool b);
-    
-
-    
-    
-
-
-
 };
 
 }
 #endif
-    

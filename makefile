@@ -1,59 +1,50 @@
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall -g
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+CXX      = g++
+CXXFLAGS = -std=c++17 -Wall -g -Iinclude
+LDFLAGS  = -lsfml-graphics -lsfml-window -lsfml-system
 
-SRC = \
-    Game.cpp \
-    Player.cpp \
-    Merchant.cpp \
-    Spy.cpp \
-    General.cpp \
-    Judge.cpp \
-    Baron.cpp \
-    Governor.cpp
-
-OBJ = $(SRC:.cpp=.o)
-
-# GUI target
-GUI_TARGET = coup_gui
-GUI_OBJ = GUI.o $(OBJ)
-
-# Demo target
+GUI_TARGET  = coup_gui
 DEMO_TARGET = demo
-DEMO_OBJ = Demo.o $(OBJ)
-
-# Tests target
 TEST_TARGET = test
-TEST_OBJ = tests.o $(OBJ)
 
-.PHONY: all gui demo test clean
+CORE_SRC = \
+  src/Game.cpp \
+  src/Player.cpp \
+  src/Merchant.cpp \
+  src/Spy.cpp \
+  src/General.cpp \
+  src/Judge.cpp \
+  src/Baron.cpp \
+  src/Governor.cpp
 
-default: all
+CORE_OBJ = $(CORE_SRC:.cpp=.o)
+
+GUI_OBJ  = src/GUI.o  $(CORE_OBJ)
+DEMO_OBJ = src/Demo.o $(CORE_OBJ)
+TEST_OBJ = tests/tests.o $(CORE_OBJ)
+
+.PHONY: all gui demo test clean valgrind
 
 all: gui demo test
 
 gui: $(GUI_TARGET)
-
-$(GUI_TARGET): GUI.o $(OBJ)
-	$(CXX) GUI.o $(OBJ) -o $@ $(LDFLAGS)
-
 demo: $(DEMO_TARGET)
-
-$(DEMO_TARGET): Demo.o $(OBJ)
-	$(CXX) Demo.o $(OBJ) -o $@ $(LDFLAGS)
-
 test: $(TEST_TARGET)
 
-$(TEST_TARGET): tests.o $(OBJ)
-	$(CXX) tests.o $(OBJ) -o $@ $(LDFLAGS)
+$(GUI_TARGET): $(GUI_OBJ)
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
+$(DEMO_TARGET): $(DEMO_OBJ)
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+$(TEST_TARGET): $(TEST_OBJ)
+	$(CXX) $^ -o $@ $(LDFLAGS)
+
+# Generic compile rule
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ) GUI.o Demo.o tests.o $(GUI_TARGET) $(DEMO_TARGET) $(TEST_TARGET)
+	rm -f src/*.o tests/*.o $(GUI_TARGET) $(DEMO_TARGET) $(TEST_TARGET)
 
 valgrind: test
-	valgrind --leak-check=full --track-origins=yes ./test
-
-
+	valgrind --leak-check=full --track-origins=yes ./$(TEST_TARGET)

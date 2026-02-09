@@ -1,13 +1,12 @@
 #pragma once
 #include "Player.hpp"
-#include "Game.hpp"
 
 namespace coup {
 
-class Judge : public Player {
+class General : public Player {
 public:
-    Judge(Game& game);
-    void cancelBribe(); 
+    General(Game& game);
+    void cancelcoup(Player& p); 
     std::string role() const override;
 };
 }

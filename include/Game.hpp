@@ -48,8 +48,7 @@ public:
     bool getgameover();
     Player* getwinner();
     Player* getLastCoup() const;
-
-
-    
 };
+
 }
+

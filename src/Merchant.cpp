@@ -1,8 +1,6 @@
-#include "Merchant.hpp"
+#include "../include/Merchant.hpp"
 #include <stdexcept>
-#include "Game.hpp"
-
-#include "Merchant.hpp"
+#include "../include/Game.hpp"
 
 namespace coup {
 
@@ -50,3 +48,4 @@ void Merchant::coup(Player& p) {
 }
 
 }
+

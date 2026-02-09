@@ -1,4 +1,4 @@
-#include "Spy.hpp"
+#include "../include/Spy.hpp"
 
 namespace coup{
 

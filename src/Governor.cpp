@@ -1,4 +1,4 @@
-#include "Governor.hpp"
+#include "../include/Governor.hpp"
 
 namespace coup{
     Governor::Governor(Game& game) : Player(game){}
@@ -33,3 +33,4 @@ namespace coup{
 
 
 }
+

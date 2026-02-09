@@ -1,4 +1,4 @@
-#include "Baron.hpp"
+#include "../include/Baron.hpp"
 #include <stdexcept> 
 
 namespace coup{

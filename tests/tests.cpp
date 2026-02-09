@@ -1,13 +1,13 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
-#include "Game.hpp"
-#include "Player.hpp"
-#include "General.hpp"
-#include "Spy.hpp"
-#include "Judge.hpp"
-#include "Governor.hpp"
-#include "Baron.hpp"
-#include "Merchant.hpp"
+#include "../include/Game.hpp"
+#include "../include/Player.hpp"
+#include "../include/General.hpp"
+#include "../include/Spy.hpp"
+#include "../include/Judge.hpp"
+#include "../include/Governor.hpp"
+#include "../include/Baron.hpp"
+#include "../include/Merchant.hpp"
 #include <vector>
 using namespace coup;
 

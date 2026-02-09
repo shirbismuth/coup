@@ -1,6 +1,6 @@
 // GUI.cpp - כולל הצגת תור שחקן ופעולה לפי תור בלבד
 #include <SFML/Graphics.hpp>
-#include "Game.hpp"
+#include "../include/Game.hpp"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -103,7 +103,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 600), "Coup - GUI Gameboard");
     sf::Font font;
-    if (!font.loadFromFile("ARIAL.TTF"))
+    if (!font.loadFromFile("assets/ARIAL.TTF"))
     {
         std::cerr << "Error loading font" << std::endl;
         return -1;
@@ -140,7 +140,7 @@ int main()
 
     // Update the start button design
     sf::Font junicodeFont;
-    if (!junicodeFont.loadFromFile("Junicode.ttf"))
+    if (!junicodeFont.loadFromFile("assets/Junicode.ttf"))
     {
         std::cerr << "Error loading Junicode font" << std::endl;
     }

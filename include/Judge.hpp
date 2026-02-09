@@ -4,10 +4,10 @@
 
 namespace coup {
 
-class Baron : public Player {
+class Judge : public Player {
 public:
-    Baron(Game& game);
-    void invest(); 
+    Judge(Game& game);
+    void cancelBribe(); 
     std::string role() const override;
 };
 }

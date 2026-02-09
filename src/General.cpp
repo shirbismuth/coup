@@ -1,6 +1,6 @@
-#include "General.hpp"
+#include "../include/General.hpp"
 #include <stdexcept>
-#include "Game.hpp"
+#include "../include/Game.hpp"
 
 namespace coup
 {
